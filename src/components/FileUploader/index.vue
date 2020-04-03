@@ -71,12 +71,14 @@ export default {
       files: [],
       showPanel: false,
       directory: false,
+      // 通过了input-filter检查后的文件
       checkedCount: 0
     };
   },
   watch: {
     showPanel: function(val) {
       if (val === false) {
+        this.checkedCount = 0;
         this.$refs.upload.clear();
       }
     }
