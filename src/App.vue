@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import demo from "./views/demo.vue";
+import demo from './views/demo.vue'
 export default {
-  name: "App",
+  name: 'App',
   components: {
     demo
   }
-};
+}
 </script>
 
 <style>

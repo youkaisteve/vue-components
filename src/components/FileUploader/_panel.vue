@@ -66,8 +66,8 @@
   </div>
 </template>
 <script>
-import rowMixin from "./row-mixin.js";
-import * as consts from "./consts.js";
+import rowMixin from './row-mixin.js'
+import * as consts from './consts.js'
 export default {
   mixins: [rowMixin],
   props: {
@@ -88,53 +88,53 @@ export default {
       currentUploadedCount: 0,
       totalCount: 0,
       finished: false
-    };
+    }
   },
   watch: {
     files: {
       deep: true,
       handler: function(value) {
         if (!this.tableVisible && value && value.length > 0) {
-          this.tableVisible = true;
+          this.tableVisible = true
         }
-        this.currentUploadedCount = value.filter(m => m.uploaded).length;
-        this.totalCount = value.length;
-        const correctCount = value.filter(m => !m.error).length;
+        this.currentUploadedCount = value.filter(m => m.uploaded).length
+        this.totalCount = value.length
+        const correctCount = value.filter(m => !m.error).length
         if (this.currentUploadedCount === correctCount) {
-          this.finished = true;
+          this.finished = true
         } else {
-          this.finished = false;
+          this.finished = false
         }
       }
     }
   },
   methods: {
     cancel(file) {
-      this.$emit("cancel", file, consts.ACTION_UPLOAD_CANCEL);
+      this.$emit('cancel', file, consts.ACTION_UPLOAD_CANCEL)
     },
     retry(file) {
-      this.$emit("retry", file, consts.ACTION_UPLOAD_RETRY);
+      this.$emit('retry', file, consts.ACTION_UPLOAD_RETRY)
     },
     handleClose() {
       if (!this.finished) {
-        this.$confirm("列表中有未上传完成的文件，确定要放弃上传吗？", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
+        this.$confirm('列表中有未上传完成的文件，确定要放弃上传吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         })
           .then(() => {
-            this.$emit("update:show", false);
+            this.$emit('update:show', false)
           })
-          .catch(() => {});
+          .catch(() => {})
       } else {
-        this.$emit("update:show", false);
+        this.$emit('update:show', false)
       }
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
-@import "../../assets/style/common.less";
+@import '../../assets/style/common.less';
 .upload-wrapper {
   position: absolute;
   bottom: 5px;

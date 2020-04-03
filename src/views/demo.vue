@@ -3,7 +3,6 @@
     <div class="row">
       <div class="column">
         <FileUploader
-          input-id="upload"
           ref="fileUploader"
           :multiple="true"
           :drop-directory="true"
@@ -24,7 +23,7 @@
 </template>
 
 <script>
-import FileUploader from "../components/FileUploader";
+import FileUploader from '../components/FileUploader'
 export default {
   components: {
     FileUploader
@@ -32,23 +31,23 @@ export default {
   data() {
     return {
       extensions:
-        "jpeg,jpg,gif,png,doc,doc_,docx,xls,xls_,xlsx,txt,pdf,rar,zip,tar,jar,dwg,dws,dwt,dxf,csv,flv,swf,avi,mov,wmv,mp4,ppt,pptx,rvt,rfa,rte,dgn,obj,ifc,cgr,dwf,pln,stp,vwx"
-    };
+        'jpeg,jpg,gif,png,doc,doc_,docx,xls,xls_,xlsx,txt,pdf,rar,zip,tar,jar,dwg,dws,dwt,dxf,csv,flv,swf,avi,mov,wmv,mp4,ppt,pptx,rvt,rfa,rte,dgn,obj,ifc,cgr,dwf,pln,stp,vwx'
+    }
   },
   methods: {
     // eslint-disable-next-line no-unused-vars
     async customAction(file) {
-      return { success: true, uploaded: false };
+      return { success: true, uploaded: false }
     },
     uploadSuccess() {
-      console.log("success");
+      console.log('success')
     },
     async responseHandler(response) {
-      console.log("responseHandler", response);
-      return true;
+      console.log('responseHandler', response)
+      return true
     }
   }
-};
+}
 </script>
 
 <style lang="less" rel="stylesheet/less" scoped>
