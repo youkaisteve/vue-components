@@ -11,7 +11,7 @@
         "core-js": "^3.6.4",
         "element-ui": "^2.13.0",
         "vue": "^2.6.11",
-        "vue-upload-component": "^2.8.15"
+        "vue-upload-component": "^2.8.20"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "^4.2.0",
