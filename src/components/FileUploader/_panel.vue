@@ -1,7 +1,7 @@
 <template>
   <div class="upload-wrapper" v-if="show">
     <div class="header flex-row justify-between cursor-hand" @click.stop="tableVisible = false">
-      <div>{{finished?'上传完成':'上传完成'}} ({{currentUploadedCount}}/{{totalCount}})</div>
+      <div>{{finished?'上传完成':'上传中'}} ({{currentUploadedCount}}/{{totalCount}})</div>
       <div class="ft12 flex-row flex-1 ml5 align-end">
         <div>
           <i class="el-icon-info" style="color: #666666;"></i>

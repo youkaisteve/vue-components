@@ -4,8 +4,17 @@
  * @desc 文件上传，类似于百度上传一样的panel
  * @author youkaisteve
  * @date 2020年4月2日
+ * @params {Function} customAction(file):{success:Boolean,uploaded:Boolean} - file:文件实例；success:处理成功；uploaded：是否已经上传
  * @example 调用实例
- * 
+ * FileUploader
+        input-id="upload"
+        ref="fileUploader"
+        :multiple="true"
+        :drop-directory="true"
+        :drop="true"
+        :directory="false"
+        post-action="http://localhost:8082/"
+    ></FileUploader>
  */
 -->
 <template>
@@ -17,6 +26,7 @@
       v-model="files"
       :directory="directory"
       @input-file="inputFile"
+      :extensions="$props.extensions"
       :customAction="innerCustomAction"
     ></vue-upload-component>
     <el-dropdown @command="handleCommand">
@@ -25,16 +35,15 @@
       </el-tooltip>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="UPLOAD_FILES">上传文件</el-dropdown-item>
-        <el-dropdown-item command="UPLOAD_FOLDER">上传文件夹</el-dropdown-item>
+        <el-dropdown-item
+          v-show="$refs.upload && $refs.upload.features.directory"
+          command="UPLOAD_FOLDER"
+        >上传文件夹</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <panel
-      :show.sync="showUpload"
-      :files="files"
-      extensions="jpeg,jpg,gif,png,doc,doc_,docx,xls,xls_,xlsx,txt,pdf,rar,zip,tar,jar,dwg,dws,dwt,dxf,csv,flv,swf,avi,mov,wmv,mp4,ppt,pptx,rvt,rfa,rte,dgn,obj,ifc,cgr,dwf,pln,stp,vwx"
-    ></panel>
-    <div v-if="$refs.upload && $refs.upload.dropActive" class="drop-active">
-      <h3>上传文件到当前目录下</h3>
+    <panel :show.sync="showUpload" :files="files" :extensions="$props.extensions"></panel>
+    <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
+      <h3>拖拽到这里上传</h3>
     </div>
   </div>
 </template>
@@ -48,7 +57,8 @@ export default {
     Panel
   },
   props: {
-    customAction: Function
+    customAction: Function,
+    autoUpload: Boolean
   },
   data() {
     return {
@@ -65,38 +75,49 @@ export default {
       this.$refs.upload.active = true;
     },
     inputFile(newFile, oldFile) {
+      // 新增文件
       if (newFile && !oldFile) {
+        console.log("新增文件");
         this.showUpload = true;
-        this.start();
-      }
-      if (newFile && oldFile) {
-        if (newFile.progress !== oldFile.progress) {
-          console.log(newFile.progress);
+        if (this.$props.autoUpload) {
+          this.start();
         }
+      }
+      // 更新文件
+      if (newFile && oldFile) {
+        console.log("更新文件");
+      }
+      // 删除文件
+      if (!newFile && oldFile) {
+        console.log("删除文件");
       }
     },
     handleCommand(command) {
-      if (command === "UPLOAD_FOLDER") {
-        if (!this.$refs.upload.features.directory) {
-          this.$message.error("Your browser does not support");
-          return;
-        }
-        let input = this.$refs.upload.$el.querySelector("input");
-        input.directory = true;
-        input.webkitdirectory = true;
-        this.directory = true;
+      let input;
+      switch (command) {
+        case "UPLOAD_FOLDER":
+          if (!this.$refs.upload.features.directory) {
+            this.$message.error("Your browser does not support");
+            return;
+          }
+          input = this.$refs.upload.$el.querySelector("input");
+          input.directory = true;
+          input.webkitdirectory = true;
+          this.directory = true;
 
-        input.onclick = null;
-        input.click();
-        input.onclick = () => {
-          this.directory = false;
-          input.directory = false;
-          input.webkitdirectory = false;
-        };
-      }
-      if (command === "UPLOAD_FILES") {
-        let input = this.$refs.upload.$el.querySelector("input");
-        input.click();
+          input.onclick = null;
+          input.click();
+          input.onclick = () => {
+            this.directory = false;
+            input.directory = false;
+            input.webkitdirectory = false;
+          };
+          break;
+        case "UPLOAD_FILES":
+          this.$refs.upload.$el.querySelector("input").click();
+          break;
+        default:
+          break;
       }
     },
     // eslint-disable-next-line no-unused-vars
@@ -104,20 +125,15 @@ export default {
       if (this.$props.customAction) {
         const customResult = await this.$props.customAction(file);
         if (customResult.success) {
-          let uploadResult;
-          if (component.features.html5) {
-            if (component.shouldUseChunkUpload(file)) {
-              uploadResult = await component.uploadChunk(file);
-            }
-            if (file.putAction) {
-              uploadResult = await component.uploadPut(file);
-            }
-            if (file.postAction) {
-              uploadResult = await component.uploadHtml5(file);
-            }
-          } else if (file.postAction) {
-            uploadResult = await component.uploadHtml4(file);
+          // 文件已经上传，这里就不上传了
+          if (customResult.uploaded) {
+            this.$refs.upload.update(file, {
+              uploaded: true
+            });
+            return;
           }
+
+          let uploadResult = await this.uploadFile(file, component);
           if (uploadResult.response) {
             this.$refs.upload.update(file, {
               uploaded: uploadResult.response.success
@@ -125,6 +141,23 @@ export default {
           }
         }
       }
+    },
+    async uploadFile(file, component) {
+      let uploadResult;
+      if (component.features.html5) {
+        if (component.shouldUseChunkUpload(file)) {
+          uploadResult = await component.uploadChunk(file);
+        }
+        if (file.putAction) {
+          uploadResult = await component.uploadPut(file);
+        }
+        if (file.postAction) {
+          uploadResult = await component.uploadHtml5(file);
+        }
+      } else if (file.postAction) {
+        uploadResult = await component.uploadHtml4(file);
+      }
+      return uploadResult;
     }
   }
 };

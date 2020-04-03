@@ -9,8 +9,10 @@
           :drop-directory="true"
           :drop="true"
           :directory="false"
+          :auto-upload="true"
           post-action="http://localhost:8082/"
           :custom-action="customAction"
+          :extensions="extensions"
         ></FileUploader>
       </div>
     </div>
@@ -25,13 +27,14 @@ export default {
   },
   data() {
     return {
-      directory: false
+      extensions:
+        "jpeg,jpg,gif,png,doc,doc_,docx,xls,xls_,xlsx,txt,pdf,rar,zip,tar,jar,dwg,dws,dwt,dxf,csv,flv,swf,avi,mov,wmv,mp4,ppt,pptx,rvt,rfa,rte,dgn,obj,ifc,cgr,dwf,pln,stp,vwx"
     };
   },
   methods: {
     // eslint-disable-next-line no-unused-vars
     async customAction(file) {
-      return { success: true };
+      return { success: true, uploaded: false };
     }
   }
 };
