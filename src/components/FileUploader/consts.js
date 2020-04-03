@@ -1,5 +1,6 @@
 export const ACTION_UPLOAD_CANCEL = 'upload_cancel';
 export const ACTION_UPLOAD_RETRY = 'upload_retry';
+export const ACTION_UPLOAD_FINISH = 'upload_finish';
 export const UPLOAD_SERVER_ERROR = '上传失败';
 export const UPLOAD_SERVER_ERROR_TYPE = 'server';
 export const UPLOAD_CANCEL_ERROR = '已取消';

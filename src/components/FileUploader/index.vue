@@ -4,7 +4,14 @@
  * @desc 文件上传，类似于百度上传一样的panel
  * @author youkaisteve
  * @date 2020年4月2日
- * @params {Function} customAction(file):{success:Boolean,uploaded:Boolean} - file:文件实例；success:处理成功；uploaded：是否已经上传
+ * @params {Function} customAction(file):Promise<{success:Boolean,uploaded:Boolean}> - file:文件实例；success:处理成功；uploaded：是否已经上传
+ * @params {Boolean} autoUpload - 是否自动上传
+ * @params {Function} responseHandler - 处理上传结果的方法，需要返回Promise<Boolean>,true表示处理成功，否则为失败
+ * events
+ * @done - 全部完成，无论失败还是成功
+ * methods
+ * upload - 触发上传，是否支持文件夹要根据设置情况来定
+ * uploadFolder - 触发上传文件夹
  * @example 调用实例
  * FileUploader
         input-id="upload"
@@ -28,18 +35,23 @@
       :extensions="$props.extensions"
       :customAction="innerCustomAction"
     ></vue-upload-component>
-    <el-dropdown @command="handleCommand">
-      <el-tooltip content="可拖拽文件或文件夹进行上传" placement="top">
-        <el-button size="small" type="primary" @click="handleCommand('UPLOAD_FILES')">上传</el-button>
-      </el-tooltip>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="UPLOAD_FILES">上传文件</el-dropdown-item>
-        <el-dropdown-item
-          v-if="$refs.upload && $refs.upload.features.directory"
-          command="UPLOAD_FOLDER"
-        >上传文件夹</el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+    <template v-if="$slots.default">
+      <slot />
+    </template>
+    <template v-else>
+      <el-dropdown @command="handleCommand">
+        <el-tooltip content="可拖拽文件或文件夹进行上传" placement="top">
+          <el-button size="small" type="primary" @click="handleCommand('UPLOAD_FILES')">上传</el-button>
+        </el-tooltip>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="UPLOAD_FILES">上传文件</el-dropdown-item>
+          <el-dropdown-item
+            v-if="$refs.upload && $refs.upload.features.directory"
+            command="UPLOAD_FOLDER"
+          >上传文件夹</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </template>
     <panel
       :show.sync="showPanel"
       :files="files"
@@ -56,6 +68,8 @@ import VueUploadComponent from "vue-upload-component";
 import Panel from "./_panel.vue";
 import * as consts from "./consts.js";
 
+const UPLOAD_FILES = "UPLOAD_FILES";
+const UPLOAD_FOLDER = "UPLOAD_FOLDER";
 export default {
   inheritAttrs: false,
   components: {
@@ -64,7 +78,8 @@ export default {
   },
   props: {
     customAction: Function,
-    autoUpload: Boolean
+    autoUpload: Boolean,
+    responseHandler: Function
   },
   data() {
     return {
@@ -126,7 +141,7 @@ export default {
     handleCommand(command) {
       let input;
       switch (command) {
-        case "UPLOAD_FOLDER":
+        case UPLOAD_FOLDER:
           if (!this.$refs.upload.features.directory) {
             this.$message.error("Your browser does not support");
             return;
@@ -142,7 +157,7 @@ export default {
             input.webkitdirectory = false;
           };
           break;
-        case "UPLOAD_FILES":
+        case UPLOAD_FILES:
           this.$refs.upload.$el.querySelector("input").click();
           break;
         default:
@@ -177,6 +192,8 @@ export default {
     },
     // eslint-disable-next-line no-unused-vars
     async innerCustomAction(file, component) {
+      // 跳过内部上传
+      let skipUpload = false;
       if (file.size === 0) {
         this.$refs.upload.update(file, {
           success: false,
@@ -184,9 +201,9 @@ export default {
           errorType: consts.UPLOAD_EMPTY_ERROR_TYPE,
           error: consts.UPLOAD_EMPTY_ERROR
         });
-        return;
+        skipUpload = true;
       }
-      if (this.$props.customAction) {
+      if (!skipUpload && this.$props.customAction) {
         const customResult = await this.$props.customAction(file);
         if (customResult.success) {
           // 文件已经上传，这里就不上传了
@@ -207,15 +224,23 @@ export default {
 
         // 如果customAction已经上传了，则不需要这里再次上传了
         if (customResult.uploaded) {
-          return;
+          skipUpload = true;
         }
       }
       try {
-        const uploadResult = await this.uploadFile(file, component);
-        if (uploadResult.response) {
+        if (!skipUpload) {
+          const uploadResult = await this.uploadFile(file, component);
+          if (this.$props.responseHandler) {
+            const handlerResult = await this.$props.responseHandler(
+              uploadResult.response
+            );
+            if (!handlerResult) {
+              throw Error("responseHandler return false");
+            }
+          }
           this.$refs.upload.update(file, {
-            success: uploadResult.response.success,
-            uploaded: uploadResult.response.success
+            success: true,
+            uploaded: true
           });
         }
       } catch (err) {
@@ -225,6 +250,8 @@ export default {
           error: consts.UPLOAD_SERVER_ERROR,
           errorType: consts.UPLOAD_SERVER_ERROR_TYPE
         });
+      } finally {
+        this.checkUploadFinish(file);
       }
     },
     async uploadFile(file, component) {
@@ -243,6 +270,22 @@ export default {
         uploadResult = await component.uploadHtml4(file);
       }
       return uploadResult;
+    },
+    checkUploadFinish(file) {
+      // 如果是最后一个文件,强制去刷新
+      if (
+        this.files.findIndex(m => m.id === file.id) ===
+        this.files.length - 1
+      ) {
+        console.log(`这是最后一个上传的文件`);
+        this.$emit("done");
+      }
+    },
+    upload() {
+      this.handleCommand(UPLOAD_FILES);
+    },
+    uploadFolder() {
+      this.handleCommand(UPLOAD_FOLDER);
     }
   }
 };

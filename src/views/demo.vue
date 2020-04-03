@@ -12,8 +12,12 @@
           :auto-upload="true"
           post-action="http://localhost:8082/"
           :custom-action="customAction"
+          :responseHandler="responseHandler"
           :extensions="extensions"
-        ></FileUploader>
+          @done="uploadSuccess"
+        >
+          <el-button type="primary" size="large" @click="$refs.fileUploader.uploadFolder()">自定义上传</el-button>
+        </FileUploader>
       </div>
     </div>
   </div>
@@ -35,6 +39,13 @@ export default {
     // eslint-disable-next-line no-unused-vars
     async customAction(file) {
       return { success: true, uploaded: false };
+    },
+    uploadSuccess() {
+      console.log("success");
+    },
+    async responseHandler(response) {
+      console.log("responseHandler", response);
+      return true;
     }
   }
 };
