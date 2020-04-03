@@ -53,12 +53,12 @@
           <i
             v-if="!scope.row.uploaded && !scope.row.error"
             class="cursor-hand zhgd_iconfont zhgd_icon-delete1"
-            @click.stop="cancel(scope.$index)"
+            @click.stop="cancel(scope.row)"
           ></i>
           <i
             v-if="scope.row.error"
             class="cursor-hand zhgd_iconfont zhgd_icon-xuanzhuan"
-            @click.stop="retry(scope.$index)"
+            @click.stop="retry(scope.row)"
           ></i>
         </template>
       </el-table-column>
@@ -67,7 +67,7 @@
 </template>
 <script>
 import rowMixin from "./row-mixin.js";
-
+import * as consts from "./consts.js";
 export default {
   mixins: [rowMixin],
   props: {
@@ -109,11 +109,11 @@ export default {
     }
   },
   methods: {
-    cancel(index) {
-      this.$emit("cancel", index);
+    cancel(file) {
+      this.$emit("cancel", file, consts.ACTION_UPLOAD_CANCEL);
     },
-    retry(index) {
-      this.$emit("retry", index);
+    retry(file) {
+      this.$emit("retry", file, consts.ACTION_UPLOAD_RETRY);
     },
     handleClose() {
       if (!this.finished) {

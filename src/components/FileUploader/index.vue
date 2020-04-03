@@ -24,7 +24,6 @@
       v-bind="$attrs"
       v-on="$listeners"
       v-model="files"
-      :directory="directory"
       @input-file="inputFile"
       :extensions="$props.extensions"
       :customAction="innerCustomAction"
@@ -36,12 +35,17 @@
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="UPLOAD_FILES">上传文件</el-dropdown-item>
         <el-dropdown-item
-          v-show="$refs.upload && $refs.upload.features.directory"
+          v-if="$refs.upload && $refs.upload.features.directory"
           command="UPLOAD_FOLDER"
         >上传文件夹</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <panel :show.sync="showUpload" :files="files" :extensions="$props.extensions"></panel>
+    <panel
+      :show.sync="showPanel"
+      :files="files"
+      :extensions="$props.extensions"
+      @cancel="handleFileAction"
+    ></panel>
     <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
       <h3>拖拽到这里上传</h3>
     </div>
@@ -50,6 +54,8 @@
 <script>
 import VueUploadComponent from "vue-upload-component";
 import Panel from "./_panel.vue";
+import * as consts from "./consts.js";
+
 export default {
   inheritAttrs: false,
   components: {
@@ -63,29 +69,52 @@ export default {
   data() {
     return {
       files: [],
-      showUpload: false,
-      directory: false
+      showPanel: false,
+      directory: false,
+      checkedCount: 0
     };
+  },
+  watch: {
+    showPanel: function(val) {
+      if (val === false) {
+        this.$refs.upload.clear();
+      }
+    }
   },
   methods: {
     /**
      * 开始上传
      */
     start() {
+      console.log("start");
       this.$refs.upload.active = true;
     },
     inputFile(newFile, oldFile) {
       // 新增文件
       if (newFile && !oldFile) {
         console.log("新增文件");
-        this.showUpload = true;
-        if (this.$props.autoUpload) {
+        this.checkedCount++;
+        console.log("checkedCount", this.checkedCount);
+        this.showPanel = true;
+        if (
+          this.$props.autoUpload &&
+          this.checkedCount === this.files.length &&
+          !this.$refs.upload.active
+        ) {
           this.start();
         }
       }
       // 更新文件
       if (newFile && oldFile) {
         console.log("更新文件");
+        if (newFile.error && newFile.error !== oldFile.error) {
+          switch (newFile.error) {
+            case consts.UPLOAD_EXT_ERROR_TYPE:
+              newFile.uploaded = newFile.success = false;
+              newFile.errorType = consts.UPLOAD_EXT_ERROR_TYPE;
+              newFile.error = consts.UPLOAD_EXT_ERROR;
+          }
+        }
       }
       // 删除文件
       if (!newFile && oldFile) {
@@ -103,12 +132,10 @@ export default {
           input = this.$refs.upload.$el.querySelector("input");
           input.directory = true;
           input.webkitdirectory = true;
-          this.directory = true;
 
           input.onclick = null;
           input.click();
           input.onclick = () => {
-            this.directory = false;
             input.directory = false;
             input.webkitdirectory = false;
           };
@@ -120,26 +147,82 @@ export default {
           break;
       }
     },
+    handleFileAction(file, action) {
+      let updateData;
+      switch (action) {
+        case consts.ACTION_UPLOAD_CANCEL:
+          updateData = {
+            success: false,
+            uploaded: false,
+            active: false,
+            errorType: consts.UPLOAD_CANCEL_ERROR_TYPE,
+            error: consts.UPLOAD_CANCEL_ERROR
+          };
+          break;
+        case consts.ACTION_UPLOAD_RETRY:
+          updateData = {
+            success: false,
+            uploaded: false,
+            active: true
+          };
+          break;
+        default:
+          break;
+      }
+      if (updateData) {
+        this.$ref.upload.update(file, updateData);
+      }
+    },
     // eslint-disable-next-line no-unused-vars
     async innerCustomAction(file, component) {
+      if (file.size === 0) {
+        this.$refs.upload.update(file, {
+          success: false,
+          uploaded: false,
+          errorType: consts.UPLOAD_EMPTY_ERROR_TYPE,
+          error: consts.UPLOAD_EMPTY_ERROR
+        });
+        return;
+      }
       if (this.$props.customAction) {
         const customResult = await this.$props.customAction(file);
         if (customResult.success) {
           // 文件已经上传，这里就不上传了
           if (customResult.uploaded) {
             this.$refs.upload.update(file, {
+              success: true,
               uploaded: true
             });
-            return;
           }
-
-          let uploadResult = await this.uploadFile(file, component);
-          if (uploadResult.response) {
-            this.$refs.upload.update(file, {
-              uploaded: uploadResult.response.success
-            });
-          }
+        } else {
+          this.$refs.upload.update(file, {
+            uploaded: false,
+            success: false,
+            error: customResult.errorMessage,
+            errorType: consts.UPLOAD_SERVER_ERROR_TYPE
+          });
         }
+
+        // 如果customAction已经上传了，则不需要这里再次上传了
+        if (customResult.uploaded) {
+          return;
+        }
+      }
+      try {
+        const uploadResult = await this.uploadFile(file, component);
+        if (uploadResult.response) {
+          this.$refs.upload.update(file, {
+            success: uploadResult.response.success,
+            uploaded: uploadResult.response.success
+          });
+        }
+      } catch (err) {
+        console.log(err);
+        this.$refs.upload.update(file, {
+          success: false,
+          error: consts.UPLOAD_SERVER_ERROR,
+          errorType: consts.UPLOAD_SERVER_ERROR_TYPE
+        });
       }
     },
     async uploadFile(file, component) {

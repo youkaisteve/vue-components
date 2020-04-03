@@ -5,6 +5,9 @@ export default {
             return utils.formatSize(row.size);
         },
         formatProgress(row) {
+            if (row.error) {
+                return '--';
+            }
             return parseFloat(row.progress).toFixed(0) + '%';
         },
         fileName(row) {
