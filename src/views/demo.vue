@@ -14,9 +14,7 @@
           :responseHandler="responseHandler"
           :extensions="extensions"
           @done="uploadSuccess"
-        >
-          <el-button type="primary" size="large" @click="$refs.fileUploader.uploadFolder()">自定义上传</el-button>
-        </FileUploader>
+        ></FileUploader>
       </div>
     </div>
   </div>
@@ -30,8 +28,7 @@ export default {
   },
   data() {
     return {
-      extensions:
-        'jpeg,jpg,gif,png,doc,doc_,docx,xls,xls_,xlsx,txt,pdf,rar,zip,tar,jar,dwg,dws,dwt,dxf,csv,flv,swf,avi,mov,wmv,mp4,ppt,pptx,rvt,rfa,rte,dgn,obj,ifc,cgr,dwf,pln,stp,vwx'
+      extensions: /\.*/i
     }
   },
   methods: {

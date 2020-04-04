@@ -1,6 +1,9 @@
 <template>
   <div class="upload-wrapper" v-if="show">
-    <div class="header flex-row justify-between cursor-hand" @click.stop="tableVisible = false">
+    <div
+      class="header flex-row justify-between cursor-hand"
+      @click.stop="tableVisible = !tableVisible"
+    >
       <div>{{finished?'上传完成':'上传中'}} ({{currentUploadedCount}}/{{totalCount}})</div>
       <div class="ft12 flex-row flex-1 ml5 align-end">
         <div>
@@ -94,9 +97,6 @@ export default {
     files: {
       deep: true,
       handler: function(value) {
-        if (!this.tableVisible && value && value.length > 0) {
-          this.tableVisible = true
-        }
         this.currentUploadedCount = value.filter(m => m.uploaded).length
         this.totalCount = value.length
         const correctCount = value.filter(m => !m.error).length
@@ -106,6 +106,9 @@ export default {
           this.finished = false
         }
       }
+    },
+    show: function(val) {
+      this.tableVisible = val
     }
   },
   methods: {
@@ -136,7 +139,7 @@ export default {
 <style lang="less" scoped>
 @import '../../assets/style/common.less';
 .upload-wrapper {
-  position: absolute;
+  position: fixed;
   bottom: 5px;
   right: 10px;
   background: #fff;

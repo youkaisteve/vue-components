@@ -32,7 +32,6 @@
       v-on="$listeners"
       v-model="files"
       @input-file="inputFile"
-      :extensions="$props.extensions"
       :customAction="innerCustomAction"
     ></vue-upload-component>
     <template v-if="$slots.default">
@@ -272,12 +271,11 @@ export default {
       return uploadResult
     },
     checkUploadFinish(file) {
-      // 如果是最后一个文件,强制去刷新
+      // 如果是最后一个文件,表示完成了
       if (
         this.files.findIndex(m => m.id === file.id) ===
         this.files.length - 1
       ) {
-        console.log(`这是最后一个上传的文件`)
         this.$emit('done')
       }
     },
