@@ -4,7 +4,7 @@
  * @desc 文件上传，类似于百度上传一样的panel
  * @author youkaisteve
  * @date 2020年4月2日
- * @params {Function} customAction(file):Promise<{success:Boolean,uploaded:Boolean}> - file:文件实例；success:处理成功；uploaded：是否已经上传
+ * @params {Function} customAction(file):Promise<{success:Boolean,uploaded:Boolean,error:String}> - file:文件实例；success:处理成功；uploaded：是否已经上传
  * @params {Boolean} autoUpload - 是否自动上传
  * @params {Function} responseHandler - 处理上传结果的方法，需要返回Promise<Boolean>,true表示处理成功，否则为失败
  * events
@@ -102,15 +102,12 @@ export default {
      * 开始上传
      */
     start() {
-      console.log('start')
       this.$refs.upload.active = true
     },
     inputFile(newFile, oldFile) {
       // 新增文件
       if (newFile && !oldFile) {
-        console.log('新增文件')
         this.checkedCount++
-        console.log('checkedCount', this.checkedCount)
         this.showPanel = true
         if (
           this.$props.autoUpload &&
@@ -122,7 +119,6 @@ export default {
       }
       // 更新文件
       if (newFile && oldFile) {
-        console.log('更新文件')
         if (newFile.error && newFile.error !== oldFile.error) {
           switch (newFile.error) {
             case consts.UPLOAD_EXT_ERROR_TYPE:
@@ -216,7 +212,7 @@ export default {
           this.$refs.upload.update(file, {
             uploaded: false,
             success: false,
-            error: customResult.errorMessage,
+            error: customResult.error,
             errorType: consts.UPLOAD_SERVER_ERROR_TYPE
           })
         }
@@ -243,7 +239,7 @@ export default {
           })
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
         this.$refs.upload.update(file, {
           success: false,
           error: consts.UPLOAD_SERVER_ERROR,
