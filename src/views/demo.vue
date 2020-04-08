@@ -16,19 +16,58 @@
           @done="uploadSuccess"
         ></FileUploader>
       </div>
+      <div class="column">
+        <search-tree
+          node-key="id"
+          :props="treeProps"
+          :data="treeData"
+          :search-handler="searchTree"
+          @node-click="treeNodeClick"
+        >
+          <!-- <ul slot="search">
+            <li
+              v-for="(item) in searchData"
+              :key="item.id"
+              class="flex-row"
+              @click="handleSearchItemClick(item)"
+            >{{item.label}}</li>
+          </ul>-->
+        </search-tree>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import FileUploader from '../components/FileUploader'
+import SearchTree from '../components/SearchTree'
 export default {
   components: {
-    FileUploader
+    FileUploader,
+    SearchTree
   },
   data() {
     return {
-      extensions: /\.*/i
+      extensions: /\.*/i,
+      treeProps: {
+        label: 'text',
+        children: 'children'
+      },
+      treeData: [
+        {
+          id: 1,
+          text: '1',
+          isLeaf: false,
+          children: [
+            {
+              id: 2,
+              text: '1-1',
+              isLeaf: true
+            }
+          ]
+        }
+      ],
+      searchData: []
     }
   },
   methods: {
@@ -42,6 +81,28 @@ export default {
     async responseHandler(response) {
       console.log('responseHandler', response)
       return true
+    },
+    async searchTree(key) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          this.searchData = [
+            {
+              id: 10,
+              text: '自定义'
+            }
+          ]
+          // 仅demo使用，和上面对searchData的赋值不应该同时使用,但是也要resolve([])，取消loading
+          resolve([
+            {
+              id: key,
+              text: '2221'
+            }
+          ])
+        }, 1000)
+      })
+    },
+    treeNodeClick(data) {
+      console.info(data)
     }
   }
 }
