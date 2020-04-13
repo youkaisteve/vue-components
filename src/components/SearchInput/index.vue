@@ -1,6 +1,6 @@
 <template>
   <el-input v-bind="$attrs" v-on="listeners" @keyup.enter.native="handleEnterKeyup">
-    <i slot="suffix" class="el-icon-search" @click="handleSearchClick"></i>
+    <i slot="prefix" class="el-icon-search" @click="handleSearchClick"></i>
   </el-input>
 </template>
 

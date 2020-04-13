@@ -17,22 +17,18 @@
         ></FileUploader>
       </div>
       <div class="column">
-        <search-tree
-          node-key="id"
-          :props="treeProps"
-          :data="treeData"
-          :search-handler="searchTree"
-          @node-click="treeNodeClick"
-        >
-          <!-- <ul slot="search">
-            <li
-              v-for="(item) in searchData"
-              :key="item.id"
-              class="flex-row"
-              @click="handleSearchItemClick(item)"
-            >{{item.label}}</li>
-          </ul>-->
-        </search-tree>
+        <el-tabs>
+          <el-tab-pane label="分部分项">
+            <search-tree
+              node-key="id"
+              scrollViewClass="tree-scroll"
+              :props="treeProps"
+              :data="treeData"
+              :search-handler="searchTree"
+              @node-click="treeNodeClick"
+            ></search-tree>
+          </el-tab-pane>
+        </el-tabs>
       </div>
     </div>
   </div>
@@ -82,7 +78,7 @@ export default {
       console.log('responseHandler', response)
       return true
     },
-    async searchTree(key) {
+    async searchTree() {
       return new Promise(resolve => {
         setTimeout(() => {
           this.searchData = [
@@ -94,8 +90,33 @@ export default {
           // 仅demo使用，和上面对searchData的赋值不应该同时使用,但是也要resolve([])，取消loading
           resolve([
             {
-              id: key,
-              text: '2221'
+              id: 1,
+              text: '1',
+              isLeaf: false,
+              children: [
+                {
+                  id: 2,
+                  text: '2',
+                  isLeaf: true
+                },
+                {
+                  id: 3,
+                  text: '3',
+                  isLeaf: false,
+                  children: [
+                    {
+                      id: 4,
+                      text: '4',
+                      isLeaf: true
+                    },
+                    {
+                      id: 5,
+                      text: '5',
+                      isLeaf: true
+                    }
+                  ]
+                }
+              ]
             }
           ])
         }, 1000)
@@ -126,7 +147,16 @@ export default {
     border: 1px solid #00ff00;
     .column {
       flex: 1;
+      /deep/.el-tabs__item {
+        &.is-active {
+          color: #091732;
+        }
+      }
     }
+  }
+
+  /deep/ .tree-scroll {
+    height: 661px;
   }
 }
 </style>
