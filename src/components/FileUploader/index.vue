@@ -56,6 +56,7 @@
       :files="files"
       :extensions="$props.extensions"
       @cancel="handleFileAction"
+      @retry="handleFileAction"
     ></panel>
     <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
       <h3>拖拽到这里上传</h3>
@@ -175,14 +176,17 @@ export default {
           updateData = {
             success: false,
             uploaded: false,
-            active: true
+            active: true,
+            error: null,
+            errorType: null,
+            progress: 0
           }
           break
         default:
           break
       }
       if (updateData) {
-        this.$ref.upload.update(file, updateData)
+        this.$refs.upload.update(file, updateData)
       }
     },
     // eslint-disable-next-line no-unused-vars

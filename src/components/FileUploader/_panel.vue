@@ -1,17 +1,14 @@
 <template>
   <div class="upload-wrapper" v-if="show">
     <div
-      class="header flex-row justify-between cursor-hand"
+      class="header flex-row justify-between cursor-hand align-center"
       @click.stop="tableVisible = !tableVisible"
     >
-      <div>{{finished?'上传完成':'上传中'}} ({{currentUploadedCount}}/{{totalCount}})</div>
+      <div class="ft14 font-bold" style="color:#323334;">上传列表</div>
       <div class="ft12 flex-row flex-1 ml5 align-end">
-        <div>
-          <i class="el-icon-info" style="color: #666666;"></i>
-          <span>单个文件最大支持500M</span>
-        </div>
+        <span class="tips ft12">单个文件最大支持500M</span>
       </div>
-      <div class="mr20">
+      <div class="close">
         <i
           :class="[{'el-icon-minus': tableVisible, 'el-icon-plus': !tableVisible}]"
           class="cursor-hand"
@@ -20,58 +17,46 @@
         <i class="cursor-hand ml10 el-icon-close" @click.stop="handleClose"></i>
       </div>
     </div>
-    <el-table v-show="tableVisible" :data="files" style="width: 100%">
-      <el-table-column prop="name" :formatter="fileName" label="名称"></el-table-column>
-      <el-table-column prop="size" label="大小" :formatter="formatSize" width="140"></el-table-column>
-      <el-table-column prop="progress" label="进度" :formatter="formatProgress" width="80"></el-table-column>
-      <el-table-column label="状态" width="140">
-        <template slot-scope="scope">
-          <i
-            v-if="scope.row.uploaded && !scope.row.error"
-            class="zhgd_iconfont zhgd_icon-roundcheckfill"
-            style="color: #09af67"
-          ></i>
-          <i v-if="scope.row.active" class="el-icon-loading" style="color: #09af67"></i>
-          <div v-else>
-            <span v-if="!scope.row.uploaded && !scope.row.error && !scope.row.active">等待上传</span>
-            <div v-if="scope.row.error">
-              <el-tooltip v-if="scope.row.errorType==='extension'" effect="light">
-                <div slot="content">
-                  支持以下格式
-                  <br />
-                  {{extensions}}
-                </div>
-                <i class="el-icon-warning">{{scope.row.error}}</i>
-              </el-tooltip>
-              <span
-                v-else
-                :class="scope.row.errorType==='server' && 'error-text'"
-              >{{scope.row.error}}</span>
-            </div>
-          </div>
+    <bg-progress
+      v-show="tableVisible"
+      v-for="(file,index) in files"
+      :key="index"
+      :percentage="file.active ? file.progress : 0"
+      class="flex flex-row justify-end align-center ft14 files"
+    >
+      <div class="flex-1 flex-row justify-start">
+        <i class="file-icon mfe-iconfont mfe-wendang"></i>
+        <span class="name flex-row">
+          <span class="text-left text-overflow" :title="file.name">{{file.name}}</span>
+          <div v-if="file.error" class="message ft12 text-left">{{file.error}}</div>
+        </span>
+      </div>
+      <!-- <li class="flex size">{{formatSize(file.size)}}</li> -->
+      <div
+        class="flex size text-left"
+      >{{formatSizeValue(file.size * file.progress / 100)}}/{{formatSize(file)}}</div>
+      <div class="operator flex-row justify-end">
+        <template v-if="file.active">
+          <i class="cursor-hand mfe-iconfont mfe-jujue uploading" @click.stop="cancel(file)"></i>
         </template>
-      </el-table-column>
-      <el-table-column label="操作" width="80">
-        <template slot-scope="scope">
-          <i
-            v-if="!scope.row.uploaded && !scope.row.error"
-            class="cursor-hand zhgd_iconfont zhgd_icon-delete1"
-            @click.stop="cancel(scope.row)"
-          ></i>
-          <i
-            v-if="scope.row.error"
-            class="cursor-hand zhgd_iconfont zhgd_icon-xuanzhuan"
-            @click.stop="retry(scope.row)"
-          ></i>
+        <template v-if="file.success">
+          <i class="cursor-hand mfe-iconfont mfe-tongyi success"></i>
         </template>
-      </el-table-column>
-    </el-table>
+        <template v-if="file.error">
+          <i class="cursor-hand mfe-iconfont mfe-chongxinxiazai failed" @click.stop="retry(file)"></i>
+        </template>
+      </div>
+    </bg-progress>
   </div>
 </template>
 <script>
 import rowMixin from './row-mixin.js'
 import * as consts from './consts.js'
+import BgProgress from '../BgProgress'
 export default {
+  components: {
+    BgProgress
+  },
   mixins: [rowMixin],
   props: {
     show: {
@@ -89,24 +74,10 @@ export default {
     return {
       tableVisible: false,
       currentUploadedCount: 0,
-      totalCount: 0,
-      finished: false
+      totalCount: 0
     }
   },
   watch: {
-    files: {
-      deep: true,
-      handler: function(value) {
-        this.currentUploadedCount = value.filter(m => m.uploaded).length
-        this.totalCount = value.length
-        const correctCount = value.filter(m => !m.error).length
-        if (this.currentUploadedCount === correctCount) {
-          this.finished = true
-        } else {
-          this.finished = false
-        }
-      }
-    },
     show: function(val) {
       this.tableVisible = val
     }
@@ -144,14 +115,21 @@ export default {
   right: 10px;
   background: #fff;
   max-height: 400px;
-  width: 45%;
+  width: 649px;
   -webkit-box-shadow: 0 0 10px rgba(204, 204, 204, 0.5);
   -moz-box-shadow: 0 0 10px rgba(204, 204, 204, 0.5);
   box-shadow: 0 0 10px rgba(204, 204, 204, 0.5);
   z-index: 10;
   .header {
-    background: rgba(191, 229, 255, 0.07);
-    padding: 10px;
+    border-radius: 2px 2px 0px 0px;
+    padding: 20px 14px 14px 14px;
+    .tips {
+      padding-left: 9px;
+      color: #909399;
+    }
+    .close {
+      color: #323334;
+    }
   }
   .el-table--enable-row-hover .el-table__body tr:hover > td {
     background: transparent;
@@ -164,6 +142,54 @@ export default {
   }
   .error-text {
     color: #ff0033;
+  }
+  .files {
+    width: 649px;
+    height: 40px;
+    box-shadow: 0px 0px 1px 0px rgba(0, 44, 108, 0.2),
+      0px -1px 0px 0px rgba(226, 229, 235, 1);
+    .file {
+      width: 500px;
+    }
+    .file-icon {
+      padding-left: 10px;
+      color: #4a86ee;
+    }
+    .name {
+      max-width: 398px;
+      padding-left: 9px;
+
+      span {
+        max-width: 269px;
+        color: rgba(0, 0, 0, 1);
+      }
+      .message {
+        padding-left: 20px;
+        width: 70px;
+        color: #4a86ee;
+      }
+    }
+    .size {
+      color: #909399;
+      width: 130px;
+    }
+    .operator {
+      width: 110px;
+      padding-right: 16px;
+      i {
+        margin-left: 9px;
+        font-size: 22px;
+      }
+      .success {
+        color: #00b14d;
+      }
+      .uploading {
+        color: #e30000;
+      }
+      .failed {
+        color: #8e969a;
+      }
+    }
   }
 }
 </style>

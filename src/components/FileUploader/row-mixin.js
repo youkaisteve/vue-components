@@ -1,6 +1,9 @@
 import utils from './utils.js';
 export default {
     methods: {
+        formatSizeValue(value) {
+            return utils.formatSize(value);
+        },
         formatSize(row) {
             return utils.formatSize(row.size);
         },
