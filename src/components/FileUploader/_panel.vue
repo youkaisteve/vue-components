@@ -28,9 +28,9 @@
         >
           <div class="flex-1 flex-row justify-start">
             <i class="file-icon mfe-iconfont mfe-wendang"></i>
-            <span class="name flex-row">
+            <span class="name flex-row align-center">
               <span class="text-left text-overflow" :title="file.name">{{file.name}}</span>
-              <div v-if="file.error" class="message ft12 text-left">{{file.error}}</div>
+              <span v-if="file.error" class="message ft12 text-left">{{file.error}}</span>
             </span>
           </div>
           <div
@@ -170,9 +170,10 @@ export default {
             color: rgba(0, 0, 0, 1);
           }
           .message {
-            padding-left: 20px;
-            width: 70px;
+            padding-left: 10px;
+            width: 72px;
             color: #4a86ee;
+            text-align: center;
           }
         }
         .size {

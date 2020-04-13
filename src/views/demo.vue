@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      extensions: /\.*/i,
+      extensions: '.rvt',
       treeProps: {
         label: 'text',
         children: 'children'
