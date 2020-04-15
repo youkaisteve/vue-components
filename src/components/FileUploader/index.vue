@@ -25,7 +25,7 @@
  */
 -->
 <template>
-  <div>
+  <div :class="wrapperClass" :style="wrapperStyle">
     <vue-upload-component
       ref="upload"
       v-bind="$attrs"
@@ -40,7 +40,7 @@
     <template v-else>
       <el-dropdown @command="handleCommand">
         <el-tooltip content="可拖拽文件或文件夹进行上传" placement="top">
-          <el-button size="small" type="primary" @click="handleCommand('UPLOAD_FILES')">上传</el-button>
+          <el-button v-bind="btnProps" @click="handleCommand('UPLOAD_FILES')">{{btnText || '上传'}}</el-button>
         </el-tooltip>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="UPLOAD_FILES">上传文件</el-dropdown-item>
@@ -79,7 +79,11 @@ export default {
   props: {
     customAction: Function,
     autoUpload: Boolean,
-    responseHandler: Function
+    responseHandler: Function,
+    wrapperClass: String,
+    wrapperStyle: String,
+    btnProps: Object,
+    btnText: String
   },
   data() {
     return {

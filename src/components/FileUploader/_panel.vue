@@ -118,7 +118,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import '../../assets/style/common.less';
 .upload-wrapper {
   position: fixed;
   bottom: 0;

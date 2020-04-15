@@ -1,26 +1,9 @@
 <template>
   <div id="app">
-    <demo />
+    <router-view></router-view>
   </div>
 </template>
 
-<script>
-import demo from './views/demo.vue'
-export default {
-  name: 'App',
-  components: {
-    demo
-  }
-}
-</script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="less">
+@import '../src/assets/style/common.less';
 </style>
