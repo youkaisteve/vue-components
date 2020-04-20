@@ -126,7 +126,6 @@ export default {
 <style lang="less" rel="stylesheet/less" scoped>
 @import '../../assets/style/var.less';
 .search-tree {
-  width: 208px;
   .tree-search-input {
     /deep/.el-input__inner {
       border: none;

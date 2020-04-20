@@ -17,18 +17,17 @@
         ></FileUploader>
       </div>
       <div class="column">
-        <el-tabs>
-          <el-tab-pane label="分部分项">
-            <search-tree
-              node-key="id"
-              scrollViewClass="tree-scroll"
-              :props="treeProps"
-              :data="treeData"
-              :search-handler="searchTree"
-              @node-click="treeNodeClick"
-            ></search-tree>
-          </el-tab-pane>
-        </el-tabs>
+        <popover-input v-model="keyword" clearable :width="300">
+          <search-tree
+            node-key="id"
+            scrollViewClass="tree-scroll"
+            :props="treeProps"
+            :data="treeData"
+            :search-handler="searchTree"
+            :expand-on-click-node="false"
+            @node-click="treeNodeClick"
+          ></search-tree>
+        </popover-input>
       </div>
     </div>
   </div>
@@ -37,10 +36,12 @@
 <script>
 import FileUploader from '../components/FileUploader'
 import SearchTree from '../components/SearchTree'
+import PopoverInput from '../components/PopoverInput'
 export default {
   components: {
     FileUploader,
-    SearchTree
+    SearchTree,
+    PopoverInput
   },
   data() {
     return {
@@ -63,7 +64,8 @@ export default {
           ]
         }
       ],
-      searchData: []
+      searchData: [],
+      keyword: ''
     }
   },
   methods: {
@@ -124,6 +126,7 @@ export default {
     },
     treeNodeClick(data) {
       console.info(data)
+      this.keyword = data.text
     }
   }
 }
@@ -158,5 +161,8 @@ export default {
   /deep/ .tree-scroll {
     height: 661px;
   }
+}
+.popover-input {
+  width: 300px;
 }
 </style>
