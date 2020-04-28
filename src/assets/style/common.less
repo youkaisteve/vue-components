@@ -1,3 +1,6 @@
+@import 'layout';
+@import 'variable';
+
 .flex {
     display: flex;
     flex-direction: column;
@@ -145,6 +148,55 @@
     font-weight: bold;
 }
 
+/*字体颜色*/
+.fc_999 {
+    color: @font-999-color;
+}
+
+.fc_888 {
+    color: @font-888-color;
+}
+
+.fc_666 {
+    color: @font-666-color;
+}
+
+.fc_555 {
+    color: @font-555-color;
+}
+
+.fc_000 {
+    color: @font-black-color;
+}
+
+.fc_444 {
+    color: @font-444-color;
+}
+
+.fc_fff {
+    color: @font-white-color;
+}
+
+.fc_4A4A4A {
+    color: @font-4A4A4A-color;
+}
+
+.fc_3EE19A {
+    color: @font-3EE19A-color;
+}
+
+.fc_FC475F {
+    color: #fc475f;
+}
+
+.fc_409EFF {
+    color: @font-409EFF-color;
+}
+
+.font-blue-color {
+    color: @font-blue-color;
+}
+
 .text-overflow {
     overflow: hidden;
     white-space: nowrap;
@@ -157,6 +209,160 @@
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+}
+
+/*搜索框*/
+.el-input-box {
+    .el-input__inner {
+        background-color: @font-white-color;
+        height: 38px;
+        padding: 4px 10px;
+        -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.07) !important;
+        -moz-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.07) !important;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.07) !important;
+        border: 0;
+        border-radius: 0;
+    }
+    .el-input-group__append {
+        color: @font-white-color;
+        z-index: 2;
+        width: 42px;
+        padding: 0;
+        background-color: @font-blue-color;
+        border: 0;
+        border-radius: 0;
+        text-align: center;
+    }
+    .zhgd_icon-sousuo_sousuo {
+        font-size: 20px;
+    }
+}
+
+.el-input.input .el-input__icon {
+    font-size: 18px;
+    position: absolute;
+    width: 35px;
+    height: 100%;
+    right: 0;
+    top: 0;
+    text-align: center;
+    color: #bfcbd9;
+    transition: all 0.3s;
+}
+
+.el-input.input.small .el-input__inner {
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+}
+
+.el-input.input.small .el-input__icon {
+    font-size: 14px;
+    line-height: 32px;
+}
+
+.el-input.input.small .icon-remove-text {
+    line-height: 32px;
+}
+
+.section-wrapper {
+    .section-title {
+        position: relative;
+        padding-left: 14px;
+        margin-top: 30px;
+        &:before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 0;
+            width: 4px;
+            height: 14px;
+            background-color: @font-blue-color;
+        }
+        .title-txt {
+            font-size: 16px;
+        }
+        .info-txt {
+            font-size: 12px;
+            color: @font-999-color;
+            padding-left: 5px;
+        }
+    }
+    .section-content {
+        min-height: initial;
+    }
+}
+
+.hide {
+    display: none !important;
+}
+
+.show-block {
+    display: block !important;
+}
+
+.show-flex {
+    display: flex !important;
+}
+
+.border-b {
+    border-bottom: 1px solid @font-E8E8E8-color;
+}
+
+.radio-list-vertical {
+    .el-radio + .el-radio {
+        margin-left: 0;
+    }
+    .el-radio {
+        margin-top: 10px;
+    }
+}
+
+.el-button.el-button--primary,
+.el-button.el-button--default {
+    min-width: 80px;
+}
+
+.el-button.el-button--text.tb-link {
+    white-space: inherit;
+    height: auto;
+    text-align: left;
+    border-left: 0;
+    padding: 0;
+    margin-left: 0;
+}
+
+.el-tag-box {
+    .el-tag {
+        margin-left: 10px;
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+}
+
+.divide-line-vertical {
+    display: inline-block;
+    width: 1.2px;
+    vertical-align: middle;
+    height: 22px;
+    margin: 0 10px;
+    background-color: @font-ddd-color;
+    color: transparent;
+}
+
+.divide-line-border-vertical {
+    display: inline-block;
+    width: 1px;
+    vertical-align: middle;
+    height: 22px;
+    margin: 0 10px;
+    border: 0;
+    border-left: 1px solid @font-ddd-color;
+    color: transparent;
+    &.dashed {
+        border-style: dashed;
+    }
 }
 
 /*外边距*/
@@ -244,4 +450,167 @@
 
 .p20 {
     padding: 20px;
+}
+
+.module {
+    width: 100%;
+    height: 100%;
+}
+
+.relative {
+    position: relative;
+}
+
+/*=====table====*/
+table {
+    border-spacing: 0;
+    td {
+        padding: 10px;
+    }
+    &.fixed {
+        table-layout: fixed;
+    }
+    &.stripe {
+        tr:nth-child(even) {
+            background-color: rgba(229, 242, 255, 0.5);
+        }
+    }
+}
+
+.cursor-hand {
+    cursor: pointer;
+}
+
+.box-sizing {
+    box-sizing: border-box;
+}
+
+.box-sizing {
+    box-sizing: border-box;
+}
+
+.select-blue.el-select {
+    .el-input__inner {
+        width: 100%;
+        border: 0;
+        font-weight: bold;
+        color: #3a8adb;
+    }
+    .el-input .el-select__caret {
+        color: #3a8adb;
+        font-weight: bold;
+    }
+}
+
+.el-input.input .icon-remove-text {
+    right: 35px;
+    line-height: 38px;
+    width: 30px;
+    cursor: pointer;
+}
+
+.el-input.input .el-input__icon,
+.el-input.input .icon-remove-text {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    text-align: center;
+    color: #bfcbd9;
+}
+
+.section-caption,
+.section-caption-border {
+    display: block;
+    font-size: 16px;
+    line-height: 35px;
+    color: @font-151515-color;
+}
+
+.section-caption-border {
+    position: relative;
+    font-weight: bold;
+    &:before {
+        position: absolute;
+        content: '';
+        width: 3px;
+        height: 15px;
+        background-color: #2668b4;
+        left: -10px;
+        top: 9px;
+    }
+}
+
+.round-tag {
+    display: inline-block;
+    margin-right: 10px;
+    min-width: 50px;
+    height: 35px;
+    background-color: #f56c6c;
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+    line-height: 35px;
+    color: @font-white-color;
+    padding: 0 20px;
+}
+
+.el-scrollbar__wrap {
+    overflow: auto;
+    margin-bottom: 0 !important;
+}
+
+.el-pagination .el-select .el-input .el-input__inner,
+.el-pagination__editor.el-input .el-input__inner {
+    line-height: 28px;
+}
+
+.tab-container {
+    .tab-title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .tab-title-item {
+            font-size: 14px;
+            color: @font-4A4A4A-color;
+            line-height: 40px;
+            padding: 0 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            &.active {
+                color: @font-409EFF-color;
+                border-bottom-color: @font-409EFF-color;
+            }
+        }
+    }
+}
+
+/*table*/
+.table-box {
+    &.el-table {
+        th {
+            height: 26px;
+            padding: 0 6px;
+            div.cell {
+                font-size: 14px;
+            }
+        }
+        td {
+            .cell {
+                font-size: 14px;
+            }
+        }
+        .el-button--text.tb-link {
+            white-space: inherit;
+            height: auto;
+            text-align: left;
+            border-left: 0;
+            padding: 0;
+        }
+        .el-button--text.btn-link {
+            border-left: 0;
+            padding-right: 6px;
+            padding-left: 0;
+            margin-left: 0;
+        }
+    }
 }

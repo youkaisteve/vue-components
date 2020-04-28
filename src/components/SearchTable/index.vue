@@ -403,7 +403,7 @@ export default {
           </el-table>
         </el-row>
         {this.noPagination ? null : (
-          <el-row class="search-table-pagination flex-row justify-end">
+          <el-row class="search-table-pagination flex-row justify-content-end">
             <elPagination
               layout={paginationOptions.layout}
               pageSizes={paginationOptions.pageSizes}
@@ -420,7 +420,7 @@ export default {
   }
 }
 </script>
-<style scoped lang="less">
+<style scoped lang="scss">
 .search-table-pagination {
   margin-top: 20px;
 }

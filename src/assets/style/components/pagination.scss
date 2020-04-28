@@ -1,0 +1,134 @@
+@import 'var';
+
+.yz {
+  .el-pagination.is-background {
+    display: flex;
+    justify-content: flex-end;
+    padding: 25px 5px;
+    //margin-top: 25px;
+    &.right{
+      justify-content: flex-end;
+    }
+    &.left{
+      justify-content: flex-start;
+    }
+    //上一页 下一页
+    .btn-prev {
+      order: 1;
+      border: 1px solid $--color-border;
+      background: $--color-white;
+      min-width: 30px;
+      height: 30px;
+      &[disabled] {
+        .el-icon.el-icon-arrow-left {
+          color: $--color-module-inner-slice;
+        }
+      }
+      .el-icon.el-icon-arrow-left {
+        color: $--color-primary-active;
+      }
+    }
+    .btn-next {
+      order: 3;
+      border: 1px solid $--color-border;
+      background: $--color-white;
+      min-width: 30px;
+      height: 30px;
+      &[disabled] {
+        .el-icon.el-icon-arrow-right {
+          color: $--color-module-inner-slice;
+        }
+      }
+      .el-icon.el-icon-arrow-right {
+        color: $--color-primary-active;
+      }
+    }
+
+    //分页按钮
+    .el-pager {
+      order: 2;
+      >li{
+        margin: 0 4px;
+      }
+      .number {
+        min-width: 30px;
+        height: 30px;
+        border: 1px solid $--color-border;
+        background: $--color-white;
+        line-height: 30px;
+        font-size: $--font-size-sup;
+        font-weight: 400;
+        color: $--color-primary-active;
+        &.active {
+          border: none;
+          color: $--color-black;
+          background: $--color-white;
+          width: 30px;
+          height: 30px;
+        }
+      }
+      .el-icon.more.btn-quickprev.el-icon-more,
+      .el-icon.more.btn-quicknext.el-icon-more,
+      .el-icon.more.btn-quicknext.el-icon-d-arrow-right,
+      .el-icon.more.btn-quickprev.el-icon-d-arrow-left {
+        min-width: 30px;
+        height: 30px;
+        border: 1px solid $--color-border;
+        background: $--color-white;
+      }
+      .el-icon.more.btn-quicknext:before,
+      .el-icon.more.btn-quickprev:before {
+        line-height: 30px;
+      }
+    }
+
+    //跳转页数
+    .el-pagination__jump {
+      order: 5;
+      line-height: 30px;
+      margin-left: 0;
+      display: flex;
+      .el-input.el-pagination__editor.is-in-pagination {
+        width: 50px;
+        height: 30px;
+        line-height: 30px;
+        .el-input__inner {
+          width: 30px;
+          height: 30px;
+          padding-left: 0;
+          padding-right: 0;
+          border-radius: $--border-radius-small;
+        }
+      }
+    }
+
+    //100条/页
+    .el-pagination__sizes{
+      margin-right: 3px;
+      order: 4;
+      input{
+        height: 30px !important;
+        width: 100px ;
+        padding-right: 8px;
+      }
+      .el-select.el-select--mini{
+        min-width: 0 !important;
+        .el-input.el-input--mini.el-input--suffix{
+          margin: 0 4px;
+          .el-input__suffix{
+            display: inline-flex;
+            right: 4px;
+          }
+        }
+      }
+    }
+
+    //total (共多少条)
+    .el-pagination__total{
+      height: 30px;
+      line-height: 30px;
+      order: 0;
+      margin-right: 8px;
+    }
+  }
+}

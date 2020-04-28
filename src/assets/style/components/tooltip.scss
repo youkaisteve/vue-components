@@ -1,0 +1,15 @@
+@import 'var';
+.yz-tooltip_popper {
+  &.el-tooltip__popper.is-light {
+    border: 1px solid $--color-input-border;
+    color: $--color-icon;
+    .popper__arrow {
+      border-bottom-color: $--color-input-border;
+      border-top-color: $--color-input-border;
+    }
+  }
+}
+.yz-popover {
+  padding: 12px 20px;
+  font-size: $--font-size-sup;
+}

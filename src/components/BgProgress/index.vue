@@ -50,7 +50,7 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .progress-bar {
   position: absolute;
   left: 0;

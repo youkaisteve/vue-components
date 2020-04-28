@@ -6,5 +6,8 @@
     <li>
       <router-link :to="{path:'layout'}">layout</router-link>
     </li>
+    <li>
+      <router-link :to="{path:'quality'}">quality</router-link>
+    </li>
   </ul>
 </template>

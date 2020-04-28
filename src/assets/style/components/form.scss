@@ -1,0 +1,63 @@
+@import "var";
+
+$--base-height: 30px;
+$--color-input-error: #FA5555;
+$--color-input-success: #67C23A;
+.yz {
+  .is-error {
+    .el-input__inner,
+    .el-textarea__inner{
+      border-color: $--color-input-error !important;
+    }
+    .el-input__validateIcon:before {
+      content: "\e79d";
+    }
+  }
+  .is-success {
+    .el-input__inner, .el-textarea__inner {
+      border-color: $--color-input-success !important;
+    }
+    .el-input__validateIcon:before {
+      content: "\e79c";
+    }
+  }
+  .el-form-item {
+    margin-bottom: 20px;
+    // 验证不通过
+    &.is-error{
+      @extend .is-error;
+    }
+    // 验证通过
+    &.is-success{
+      @extend .is-success;
+    }
+  }
+  .el-form-item__label {
+    line-height: $--base-height;
+    padding-right: 8px;
+    color: $--color-form-label;
+  }
+  .el-form-item__content {
+    line-height: $--base-height;
+    .el-input, .el-select {
+      vertical-align: top;
+    }
+  }
+  .el-form--inline .el-form-item {
+    margin-right: 20px;
+  }
+
+  .el-form.vertical {
+    .el-form-item {
+      margin-bottom: 3px;
+    }
+    .el-form-item:before,
+    .el-form-item:after {
+      display: block;
+    }
+    .el-form-item__label {
+      float: none;
+    }
+  }
+
+}

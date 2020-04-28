@@ -2,7 +2,7 @@
 /**
  * 文件上传
  * @desc 文件上传，类似于百度上传一样的panel
- * @author youkaisteve
+ * @author steve.k.you
  * @date 2020年4月2日
  * @params {Function} customAction(file):Promise<{success:Boolean,uploaded:Boolean,error:String}> - file:文件实例；success:处理成功；uploaded：是否已经上传
  * @params {Boolean} autoUpload - 是否自动上传
@@ -25,7 +25,7 @@
  */
 -->
 <template>
-  <div :class="wrapperClass" :style="wrapperStyle">
+  <div :class="wrapperClass" class="inline">
     <vue-upload-component
       ref="upload"
       v-bind="$attrs"
@@ -55,8 +55,11 @@
       :show.sync="showPanel"
       :files="files"
       :extensions="$props.extensions"
+      :finished="$refs.upload && $refs.upload.uploaded"
       @cancel="handleFileAction"
       @retry="handleFileAction"
+      @start="handleFileAction"
+      @delete="handleFileAction"
     ></panel>
     <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
       <h3>拖拽到这里上传</h3>
@@ -81,7 +84,7 @@ export default {
     autoUpload: Boolean,
     responseHandler: Function,
     wrapperClass: String,
-    wrapperStyle: String,
+    wrapperStyle: Object,
     btnProps: Object,
     btnText: String
   },
@@ -127,7 +130,7 @@ export default {
         if (newFile.error && newFile.error !== oldFile.error) {
           switch (newFile.error) {
             case consts.UPLOAD_EXT_ERROR_TYPE:
-              newFile.uploaded = newFile.success = false
+              newFile.success = false
               newFile.errorType = consts.UPLOAD_EXT_ERROR_TYPE
               newFile.error = consts.UPLOAD_EXT_ERROR
           }
@@ -170,21 +173,28 @@ export default {
         case consts.ACTION_UPLOAD_CANCEL:
           updateData = {
             success: false,
-            uploaded: false,
             active: false,
             errorType: consts.UPLOAD_CANCEL_ERROR_TYPE,
             error: consts.UPLOAD_CANCEL_ERROR
           }
+          this.$emit('abort', file)
           break
         case consts.ACTION_UPLOAD_RETRY:
           updateData = {
             success: false,
-            uploaded: false,
             active: true,
             error: null,
             errorType: null,
             progress: 0
           }
+          break
+        case consts.ACTION_UPLOAD_START:
+          updateData = {
+            active: true
+          }
+          break
+        case consts.ACTION_UPLOAD_DELETE:
+          this.$refs.upload.remove(file)
           break
         default:
           break
@@ -200,34 +210,42 @@ export default {
       if (file.size === 0) {
         this.$refs.upload.update(file, {
           success: false,
-          uploaded: false,
           errorType: consts.UPLOAD_EMPTY_ERROR_TYPE,
           error: consts.UPLOAD_EMPTY_ERROR
         })
         skipUpload = true
       }
       if (!skipUpload && this.$props.customAction) {
-        const customResult = await this.$props.customAction(file)
-        if (customResult.success) {
-          // 文件已经上传，这里就不上传了
-          if (customResult.uploaded) {
+        try {
+          const customResult = await this.$props.customAction(file)
+          if (customResult.success) {
+            // 文件已经上传，这里就不上传了
+            if (customResult.uploaded) {
+              this.$refs.upload.update(file, {
+                success: true
+              })
+            }
+          } else {
             this.$refs.upload.update(file, {
-              success: true,
-              uploaded: true
+              success: false,
+              error: customResult.error,
+              errorType: consts.UPLOAD_SERVER_ERROR_TYPE
             })
           }
-        } else {
-          this.$refs.upload.update(file, {
-            uploaded: false,
-            success: false,
-            error: customResult.error,
-            errorType: consts.UPLOAD_SERVER_ERROR_TYPE
-          })
-        }
 
-        // 如果customAction已经上传了，则不需要这里再次上传了
-        if (customResult.uploaded) {
-          skipUpload = true
+          // 如果customAction已经上传了，则不需要这里再次上传了
+          if (customResult.uploaded) {
+            skipUpload = true
+          }
+        } catch (err) {
+          // 主动取消的，不记录异常
+          if (err !== 'abort') {
+            this.$refs.upload.update(file, {
+              success: false,
+              error: consts.UPLOAD_SERVER_ERROR,
+              errorType: consts.UPLOAD_SERVER_ERROR_TYPE
+            })
+          }
         }
       }
       try {
@@ -242,8 +260,7 @@ export default {
             }
           }
           this.$refs.upload.update(file, {
-            success: true,
-            uploaded: true
+            success: true
           })
         }
       } catch (err) {
@@ -274,19 +291,16 @@ export default {
       }
       return uploadResult
     },
-    checkUploadFinish(file) {
+    checkUploadFinish() {
       // 如果是最后一个文件,表示完成了
-      if (
-        this.files.findIndex(m => m.id === file.id) ===
-        this.files.length - 1
-      ) {
+      if (this.$refs.upload && this.$refs.upload.uploaded) {
         this.$emit('done')
       }
     },
-    upload() {
+    doUpload() {
       this.handleCommand(UPLOAD_FILES)
     },
-    uploadFolder() {
+    dpUploadFolder() {
       this.handleCommand(UPLOAD_FOLDER)
     }
   }
@@ -294,6 +308,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.inline {
+  display: inline;
+}
+
 .drop-active {
   top: 0;
   bottom: 0;

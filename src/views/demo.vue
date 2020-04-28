@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="column">
-        <FileUploader
+        <file-uploader
           ref="fileUploader"
           :multiple="true"
           :drop-directory="true"
@@ -14,7 +14,7 @@
           :responseHandler="responseHandler"
           :extensions="extensions"
           @done="uploadSuccess"
-        ></FileUploader>
+        ></file-uploader>
       </div>
       <div class="column">
         <popover-input v-model="keyword" clearable :width="300">
@@ -34,15 +34,7 @@
 </template>
 
 <script>
-import FileUploader from '../components/FileUploader'
-import SearchTree from '../components/SearchTree'
-import PopoverInput from '../components/PopoverInput'
 export default {
-  components: {
-    FileUploader,
-    SearchTree,
-    PopoverInput
-  },
   data() {
     return {
       extensions: '.rvt',
@@ -132,7 +124,7 @@ export default {
 }
 </script>
 
-<style lang="less" rel="stylesheet/less" scoped>
+<style lang="scss" scoped>
 .container {
   height: 100%;
   overflow: hidden;

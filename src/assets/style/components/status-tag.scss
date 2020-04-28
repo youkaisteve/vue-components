@@ -1,0 +1,42 @@
+@import "var";
+.status-tag {
+  font-size: $--font-size-sup;
+  padding: 2px 9px;
+  border: 1px solid $--color-note;
+  color: $--color-note;
+  border-radius: 100px;
+  &.done {
+    border-color: $--color-note;
+    color: $--color-note;
+  }
+  &.pending {
+    border-color: $--color-primary;
+    color: $--color-primary;
+  }
+  &.reject {
+    border-color: #FF5019;
+    color: #FF5019;
+  }
+}
+
+.yz {
+  .el-tag {
+    background-color: #F3F9FF;
+    border-color: $--color-primary;
+    border-radius: 2px;
+    height: 30px;
+    line-height: 28px;
+    color: $--color-primary;
+    font-size: $--font-size-standard;
+    margin-right: 10px;
+    margin-bottom: 6px;
+    box-sizing: border-box;
+    //margin-right: 0;
+    .el-icon-close {
+      color: $--color-primary;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+}

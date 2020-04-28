@@ -1,0 +1,102 @@
+@import 'var';
+
+.yz {
+  .flex-column {
+    > .el-button {
+      margin-left: 0;
+    }
+  }
+  .el-button:not(.is-circle).el-button--primary.is-disabled,
+  .el-button:not(.is-circle).el-button--primary.is-plain.is-disabled {
+    border-color: #cecfd8;
+    color: #fff;
+  }
+
+  .is-disabled {
+    .el-button:not(.is-circle).el-button--primary.is-plain:focus,
+    .el-button:not(.is-circle).el-button--primary.is-plain:active {
+      background-color: #f8f8f8;
+      color: #ccc;
+    }
+  }
+  .el-button:not(.is-circle) {
+    min-height: 30px;
+    font-size: $--font-size-sup;
+    padding: 6px 10px;
+    &:not(.is-round):not(.is-circle) {
+      border-radius: $--border-radius-small;
+    }
+    //流程类按钮
+    &.process {
+      width: 78px;
+    }
+    &.standard {
+      min-width: 74px;
+    }
+    &.el-button--primary {
+      background-color: $--color-primary;
+      border-color: $--color-primary;
+      &:hover {
+        background-color: $--color-primary-hover;
+        border-color: $--color-primary-hover;
+      }
+      &:active {
+        background-color: $--color-primary;
+        border-color: $--color-primary;
+      }
+      &.is-disabled,
+      &.is-disabled:hover:not(.is-plain),
+      &.is-disabled:focus:not(.is-plain),
+      &.is-disabled:active:not(.is-plain) {
+        color: #ffffff;
+        background-color: #a0cfff;
+        border-color: #a0cfff;
+      }
+      //轮廓按钮
+      &.is-plain {
+        background-color: $--color-white;
+        color: $--color-primary;
+        &.is-disabled {
+          border-color: #cecfd8;
+          color: #cecfd8;
+          .el-icon-loading {
+            color: $--color-primary;
+          }
+        }
+        &:hover:not(.is-disabled) {
+          background-color: #f3f9ff;
+        }
+        &:focus:not(.is-disabled),
+        &:active:not(.is-disabled) {
+          background-color: $--color-primary;
+          color: $--color-white;
+        }
+      }
+    }
+  }
+
+  // 文字按钮
+  .el-button.el-button--text {
+    font-size: $--font-size-standard;
+    color: $--color-primary;
+    font-weight: 400;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  //文字连接
+  .el-link {
+    &.el-link--primary {
+      color: $--color-primary;
+      &:hover {
+        color: $--color-primary-hover;
+        text-decoration-color: $--color-primary-hover;
+      }
+      &:active {
+        color: $--color-primary-active;
+        text-decoration-color: $--color-primary-active;
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+@import 'var';
+
+$--table-row-hover-background: #ebf5ff;
+$--table-cell-text-hover: #4d8cff;
+
+.yz {
+  .el-table {
+    .el-button + .el-button {
+      margin-left: 0;
+    }
+
+    .el-button {
+      margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    .el-input__inner {
+      //width: $--input-width-small;
+    }
+
+    thead.is-group th,
+    th {
+      background-color: $--color-table-header-background;
+      padding: 8px 0;
+
+      .cell {
+        font-size: $--font-size-standard;
+        color: $--color-black-tooltip;
+        line-height: normal;
+        font-weight: normal;
+      }
+    }
+
+    td {
+      padding: 10px 0;
+      color: $--color-black-deep;
+
+      .cell {
+        font-size: $--font-size-standard;
+        line-height: 20px;
+
+        .el-button--text {
+          padding: 0;
+          border: 0;
+          min-height: 18px;
+          font-size: $--font-size-standard;
+
+          &.orange {
+            color: $--color-orange;
+          }
+        }
+      }
+
+      &.editable {
+        cursor: pointer;
+
+        .cell:hover {
+          color: $--table-cell-text-hover;
+        }
+      }
+    }
+
+    &.el-table--enable-row-hover .el-table__body tr:hover > td {
+      background-color: $--table-row-hover-background;
+    }
+
+    .el-table__empty-block {
+      width: 100% !important;
+    }
+  }
+}

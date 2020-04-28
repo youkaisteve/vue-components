@@ -7,7 +7,7 @@
         </el-col>
       </el-row>
       <el-row class="filters">
-        <el-form :inline="true" class="flex-row justify-between">
+        <el-form :inline="true" class="flex-row justify-content-between">
           <el-form-item label="上传日期：">
             <el-date-picker
               size="medium"
@@ -32,14 +32,14 @@
           </el-form-item>
         </el-form>
       </el-row>
-      <el-row class="btns flex-row justify-center">
+      <el-row class="btns flex-row justify-content-center">
         <el-button @click="reset" size="medium">重置</el-button>
         <el-button type="primary" @click="search" class="pl10" size="medium">查询</el-button>
       </el-row>
     </el-row>
     <el-row class="content">
       <el-col :span="24">
-        <el-row class="operate flex-row justify-between">
+        <el-row class="operate flex-row">
           <el-col :span="12">
             <el-button size="medium">转换</el-button>
             <el-button size="medium">下载</el-button>
@@ -55,7 +55,7 @@
             <el-button size="medium">删除</el-button>
           </el-col>
           <el-col :span="6"></el-col>
-          <el-col :span="6" class="flex justify-end">
+          <el-col :span="6">
             <search-input
               clearable
               v-model="keyword"
@@ -127,7 +127,7 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .normal-search-page {
   border: solid 1px;
   width: 1131px;

@@ -1,7 +1,7 @@
 <template>
   <div class="upload-wrapper" v-if="show">
     <div
-      class="header flex-row justify-between cursor-hand align-center"
+      class="header flex-row justify-content-between cursor-hand align-items-center"
       @click.stop="tableVisible = !tableVisible"
     >
       <div class="ft14 font-bold" style="color:#323334;">上传列表</div>
@@ -24,11 +24,11 @@
           v-for="(file,index) in files"
           :key="index"
           :percentage="file.active ? file.progress : 0"
-          class="flex flex-row justify-end align-center ft14 file"
+          class="flex flex-row justify-content-end align-items-center ft14 file"
         >
-          <div class="flex-1 flex-row justify-start">
+          <div class="flex-1 flex-row justify-content-start">
             <i class="file-icon mfe-iconfont mfe-wendang"></i>
-            <span class="name flex-row align-center">
+            <span class="name flex-row align-items-center">
               <span class="text-left text-overflow" :title="file.name">{{file.name}}</span>
               <span v-if="file.error" class="message ft12 text-left">{{file.error}}</span>
             </span>
@@ -36,7 +36,7 @@
           <div
             class="flex size text-left"
           >{{formatSizeValue(file.size * file.progress / 100)}}/{{formatSize(file)}}</div>
-          <div class="operator flex-row justify-end">
+          <div class="operator flex-row justify-content-end">
             <template v-if="!file.active && !file.error && !file.success">
               <i class="cursor-hand zhgd_iconfont zhgd_icon-icon-- start" @click.stop="start(file)"></i>
               <i class="cursor-hand zhgd_iconfont zhgd_icon-delete delete" @click.stop="del(file)"></i>
@@ -62,11 +62,8 @@
 <script>
 import rowMixin from './row-mixin.js'
 import * as consts from './consts.js'
-import BgProgress from '../BgProgress'
+
 export default {
-  components: {
-    BgProgress
-  },
   mixins: [rowMixin],
   props: {
     show: {
@@ -78,13 +75,14 @@ export default {
     },
     extensions: {
       type: String
+    },
+    finished: {
+      type: Boolean
     }
   },
   data() {
     return {
-      tableVisible: false,
-      currentUploadedCount: 0,
-      totalCount: 0
+      tableVisible: false
     }
   },
   watch: {
@@ -98,6 +96,12 @@ export default {
     },
     retry(file) {
       this.$emit('retry', file, consts.ACTION_UPLOAD_RETRY)
+    },
+    start(file) {
+      this.$emit('start', file, consts.ACTION_UPLOAD_START)
+    },
+    del(file) {
+      this.$emit('delete', file, consts.ACTION_UPLOAD_DELETE)
     },
     handleClose() {
       if (!this.finished) {
@@ -150,7 +154,6 @@ export default {
     .files {
       max-height: 274px;
       overflow-y: auto;
-      overflow-x: hidden;
       .file {
         width: 638px;
         height: 40px;
@@ -163,7 +166,6 @@ export default {
         .name {
           max-width: 398px;
           padding-left: 9px;
-
           span {
             max-width: 269px;
             color: rgba(0, 0, 0, 1);

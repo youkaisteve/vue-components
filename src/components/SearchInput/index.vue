@@ -1,7 +1,5 @@
 <template>
-  <el-input v-bind="$attrs" v-on="listeners" @keyup.enter.native="handleEnterKeyup">
-    <i slot="prefix" class="el-icon-search" @click="handleSearchClick"></i>
-  </el-input>
+  <el-input v-bind="$attrs" v-on="listeners" @keyup.enter.native="handleEnterKeyup"></el-input>
 </template>
 
 <script>

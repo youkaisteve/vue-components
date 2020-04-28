@@ -1,0 +1,102 @@
+/**
+ * 根据智联团队UI规范维护的相关变量
+ * @see {@link https://lanhuapp.com/web/#/item/project/board/detail?pid=83a8c402-2cef-456e-9208-79251d64a250&project_id=83a8c402-2cef-456e-9208-79251d64a250&image_id=21d002b1-d7ec-4c60-861c-5c906c74b2a6}
+ * Color
+ */
+// 顶部导航背景色
+$--color-header-background: #2178d5;
+$--color-slider-bar: #ddedff;
+
+// link文字颜色
+$--color-link: #005cbc;
+
+// UI primary color
+$--color-primary: #2185f8;
+$--color-text-status: $--color-primary /* #1b89ff */;
+// 辅助色（hover颜色）
+$--color-primary-hover: #499dff;
+// 辅助色（icon常用）
+$--color-icon-primary: #379ff5;
+
+// 背景色（选中状态常用）
+$--color-active-background: #e9f3ff;
+// 文本框边框颜色
+$--color-border: #cecfd8;
+// 分割线颜色
+$--color-text-border: #e2e5eb;
+// 页面背景色
+$--color-page-background: #e8ebef;
+// 装饰色（模块间区分）
+$--color-section: #f2f4f7;
+// 侧边导航背景色
+$--color-sidebar-background: #fafafa;
+$--color-sidebar: $--color-sidebar-background;
+
+// 重点文字颜色 （页头标题，表单标题，表格
+$--color-black-primary: #000000;
+// 次级重点文字 （二、三级导航，文本框输入输入后文字， 下拉框常规文字颜色，表单选项内容等）
+$--color-black-secondary: #696969;
+// 提示性文字颜色 （备注说明， 表头名称等）
+$--color-black-tooltip: #909399;
+// 占位符文字 or 水印文字颜色
+$--color-black-placeholder: #cecfd8;
+
+//基础颜色color
+//$--color-primary: #3496FF;
+$--color-primary-active: #2172c8;
+//$--color-primary-hover: #60ADFF;
+$--color-primary-focus: #4e82e1;
+$--color-black: #33353d;
+$--color-black-deep: #000000;
+$--color-white: #ffffff;
+
+//突出色
+$--color-red: #f07070;
+$--color-yellow: #ff6060;
+$--color-green: #67c23a;
+$--color-orange: #ff6312;
+
+//辅助色
+$--color-background: #e8ebef;
+$--color-date-background: #f7fafe;
+$--color-disabled: #f5f7fa;
+$--color-form-header: #f7f7f7;
+//$--color-form-label: #606266;
+$--color-icon: #909399;
+$--color-input-border: #dadee5;
+$--color-module-inner-slice: #dadee5;
+$--color-module-slice: #e8ebef;
+$--color-table-header-background: #eceef5;
+$--color-text-disabled: #c5ccd6;
+
+/**
+ * Gap & Size
+ */
+
+// 头部统一高度
+$--header-nav-height: 65px;
+// 侧边栏导航高度
+$--sidebar-nav-height: 52px;
+
+//字体大小font-size
+$--font-size-sup: 12px;
+$--font-size-standard: 14px;
+$--font-size-nav: 16px;
+$--font-size-title: 19px;
+
+//圆角
+$--border-radius-base: 4px;
+$--border-radius-small: 2px;
+
+/**
+ * Form
+ */
+//输入框宽度
+$--input-width-small: 160px;
+$--input-width-normal: 242px;
+$--input-width-medium: 334px;
+$--input-width-large: 464px;
+
+$--color-form-label: $--color-black-primary;
+$--color-form-content: $--color-black-secondary;
+$--color-note: $--color-black-tooltip;

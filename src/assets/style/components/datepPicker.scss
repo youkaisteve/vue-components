@@ -1,0 +1,136 @@
+@import 'var';
+
+.yz {
+  .el-date-editor {
+    &.el-date-editor--datetime,
+    &.el-date-editor--date {
+      width: 140px;
+      &.normal {
+        width: 140px;
+      }
+      &.medium {
+        width: 242px;
+      }
+      &.large {
+        width: 334px;
+      }
+      .el-input__inner {
+        width: 100%;
+        height: 30px;
+        padding-left: 8px;
+        padding-right: 28px;
+        border-radius: $--border-radius-small;
+        font-size: $--font-size-standard;
+        border: 1px solid $--color-module-inner-slice;
+      }
+      //icon
+      .el-input__prefix {
+        left: auto;
+        right: 0;
+        background-color: $--color-date-background;
+        .el-input__icon.el-icon-date {
+          line-height: 30px;
+          width: 30px;
+          height: 30px;
+          border: 1px solid $--color-module-inner-slice;
+          box-sizing: border-box;
+        }
+      }
+      // clean-icon
+      .el-input__suffix {
+        right: 30px;
+        .el-input__suffix-inner {
+          .el-input__icon {
+            transition: none;
+            &.el-icon-circle-close {
+            }
+          }
+        }
+      }
+    }
+  }
+  //日期选择范围
+  .el-date-editor.el-range-editor.el-input__inner.el-date-editor--daterange,
+  .el-date-editor.el-range-editor.el-input__inner.el-date-editor--datetimerange{
+    &.is-active {
+      border-collapse: $--color-primary;
+      .el-input__icon.el-range__icon.el-icon-date {
+        border: 1px solid $--color-primary;
+        border-left: none;
+        border-right: 1px solid $--color-module-inner-slice;
+      }
+    }
+    height: 30px;
+    padding: 0;
+    border-radius: $--border-radius-small;
+    width: 230px;
+    display: flex;
+    align-items: center;
+    //icon
+    .el-input__icon.el-range__icon.el-icon-date,
+    .el-input__icon.el-range__icon.el-icon-time{
+      margin-left: 0;
+      //line-height: 28px;
+      line-height: normal;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border: 1px solid $--color-module-inner-slice;
+      border-left: none;
+      background-color: $--color-date-background;
+      flex-shrink: 0;
+    }
+    //开始日期,结束日期
+    .el-range-input {
+      font-size: $--font-size-standard;
+      margin: 0 4px;
+    }
+    //至
+    .el-range-separator {
+      line-height: 30px;
+      color: $--color-icon;
+      width: auto;
+    }
+    //删除 icon
+    .el-input__icon.el-range__close-icon {
+      line-height: 30px;
+      width: 17px;
+    }
+    //.el-range-input {
+    //  width: 70px;
+    //}
+    .el-range-separator {
+      width: 24px;
+    }
+  }
+
+  .el-date-editor.el-range-editor.el-input__inner.el-date-editor--datetimerange {
+    width: 340px;
+    //.el-range-input {
+    //  width: 124px;
+    //}
+  }
+  //时间选择控件
+  .el-date-editor--datetime {
+    .el-input__inner {
+      padding-left: 10px;
+    }
+    //icon
+    .el-input__prefix {
+      width: 30px;
+      right: 0;
+      left: auto;
+      background-color: #F7FAFE;
+      border: 1px solid #DADEE5;
+    }
+    // clean-icon
+    &.el-input.el-input--suffix{
+      width: 200px;
+      .el-input__suffix {
+        right: 34px;
+      }
+    }
+  }
+}

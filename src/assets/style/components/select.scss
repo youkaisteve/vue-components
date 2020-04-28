@@ -1,0 +1,91 @@
+@import 'var';
+
+.yz {
+  .el-select {
+    &.small {
+      width: 90px;
+      .el-input.el-input--suffix {
+        .el-input__inner {
+          width: 100%;
+          padding-right: 28px;
+        }
+      }
+    }
+    &.normal {
+      width: 242px;
+      .el-input.el-input--suffix {
+        .el-input__inner {
+          width: 100%;
+        }
+      }
+    }
+    &.large {
+      width: 334px;
+      .el-input.el-input--suffix {
+        .el-input__inner {
+          width: 100%;
+        }
+      }
+    }
+    .el-input.el-input--suffix {
+      .el-input__inner {
+        height: 30px;
+        line-height: 30px;
+        border-radius: $--border-radius-small;
+        font-size: $--font-size-standard;
+        padding-left: 15px;
+        padding-right: 30px;
+        &:hover:not([disabled]) {
+          border: 1px solid $--color-primary;
+        }
+        &[disabled] {
+          background: $--color-disabled;
+        }
+      }
+      //icon
+      .el-input__suffix {
+        right: 0;
+        width: 25px;
+        .el-input__suffix-inner {
+          .el-select__caret.el-input__icon {
+            &.el-icon-arrow-up {
+              line-height: 30px;
+              &::before {
+                //content: "\e78f";
+                color: $--color-icon;
+              }
+            }
+            &.el-icon-circle-close {
+              line-height: 30px;
+              &::before {
+                //content: "\e79d";
+              }
+            }
+          }
+        }
+      }
+    }
+
+    //多选
+    //&:not(.base){
+    //  min-width: 224px;
+    //}
+    .el-select__tags {
+      .el-tag {
+        padding: 0 8px;
+        height: 30px;
+        min-width: 30px;
+        line-height: 30px;
+        background: $--color-date-background;
+        border: 1px solid $--color-primary;
+        border-radius: $--border-radius-small;
+        color: $--color-primary;
+        margin: 3px 0 3px 8px;
+        .el-tag__close.el-icon-close {
+          background-color: $--color-date-background;
+          color: $--color-primary;
+        }
+      }
+    }
+  }
+}

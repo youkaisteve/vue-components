@@ -123,86 +123,11 @@ export default {
   }
 }
 </script>
-<style lang="less" rel="stylesheet/less" scoped>
-@import '../../assets/style/var.less';
+<style lang="scss" scoped>
 .search-tree {
   .tree-search-input {
     /deep/.el-input__inner {
       border: none;
-    }
-  }
-  .tree-container {
-    /deep/.el-tree-node {
-      &.is-current {
-        .el-tree-node__content {
-          border-right-color: @--color-primary;
-          .node-name,
-          .el-tree-node__expand-icon {
-            color: @--color-primary;
-          }
-          .el-icon-more {
-            display: block;
-          }
-        }
-        .el-tree-node__children {
-          .el-tree-node__content {
-            border-right-color: transparent;
-            .node-name {
-              color: @--color-black;
-            }
-            .node-row .el-icon-more {
-              display: none;
-            }
-          }
-        }
-      }
-      .el-tree-node__content {
-        height: 40px;
-        border-right: 2px solid transparent;
-        .node-row {
-          overflow: hidden;
-        }
-        .node-name {
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          &.empty-menu {
-            padding-right: 10px;
-          }
-        }
-        .el-tree-node__expand-icon,
-        .node-name {
-          font-size: @--font-size-standard;
-          color: @--color-black;
-        }
-        .is-leaf.el-tree-node__expand-icon {
-          visibility: hidden;
-        }
-        &:hover {
-          background-color: #f3f9ff;
-          .el-icon-more {
-            display: block !important;
-          }
-          .node-name,
-          .el-tree-node__expand-icon {
-            color: @--color-primary;
-          }
-        }
-      }
-    }
-    /deep/.el-tree-node .el-tree-node__content .el-tree-node__expand-icon {
-      &.mfe-zhankai {
-        color: @--color-primary;
-        &:before {
-          content: '\e6c3';
-        }
-        &.expanded {
-          transform: none;
-          &:before {
-            content: '\e6c2';
-          }
-        }
-      }
     }
   }
 }
