@@ -64,7 +64,49 @@
     <div class="tabs">
       <el-tabs>
         <el-tab-pane label="流程进度">
-          <div class="progress">progress</div>
+          <div class="progress flex flex-1">
+            <div class="panel">
+              <div class="node flex-row">
+                <div class="line"></div>
+                <div class="index flex center">
+                  <span class="ft20">1</span>
+                </div>
+                <div class="content">
+                  <div class="status">待整改</div>
+                  <div class="user-date">
+                    <span class="user">温心心</span>
+                    <span class="date">2020-04-02</span>
+                  </div>
+                </div>
+              </div>
+              <div class="node flex-row">
+                <div class="line"></div>
+                <div class="index flex center">
+                  <span class="ft20">2</span>
+                </div>
+                <div class="content">
+                  <div class="status">待整改</div>
+                  <div class="user-date">
+                    <span class="user">温心心</span>
+                    <span class="date">2020-04-02</span>
+                  </div>
+                </div>
+              </div>
+              <div class="node flex-row">
+                <div class="line"></div>
+                <div class="index flex center">
+                  <span class="ft20">3</span>
+                </div>
+                <div class="content">
+                  <div class="status ft16">待整改</div>
+                  <div class="user-date flex-row">
+                    <span class="user">温心心</span>
+                    <span class="date">2020-04-02</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="整改信息">
           <div class="rectify">rectify</div>
@@ -140,6 +182,45 @@
   .tabs {
     margin-top: 25px;
     .progress {
+      .panel {
+        .node {
+          &:first-child {
+            padding-top: 7px;
+          }
+          padding-top: 40px;
+          .line {
+            z-index: -999;
+            position: absolute;
+            left: 21px;
+            border-left: 1px solid #4a86ee;
+            height: 100%;
+          }
+          .index {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: #4a86ee;
+            span {
+              color: #ffffff;
+            }
+          }
+          .content {
+            padding-left: 14px;
+            .status {
+              color: #2d3950;
+            }
+            .user-date {
+              font-size: 12px;
+              color: #2d3950;
+              .user {
+              }
+              .date {
+                margin-left: 8px;
+              }
+            }
+          }
+        }
+      }
     }
     .rectify {
     }
