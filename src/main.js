@@ -31,6 +31,9 @@ const routes = [
     { path: '/demo', component: () => import('./views/demo.vue') },
     { path: '/layout', component: () => import('./views/layout.vue') },
     { path: '/quality', component: () => import('./views/quality.vue') },
+    { path: '/iframe', component: () => import('./views/iframe_talk.vue') },
+    { path: '/iframe1', component: () => import('./views/iframe1.vue') },
+    { path: '/iframe2', component: () => import('./views/iframe2.vue') },
 ];
 
 const router = new VueRouter({

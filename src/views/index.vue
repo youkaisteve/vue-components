@@ -9,5 +9,8 @@
     <li>
       <router-link :to="{path:'quality'}">quality</router-link>
     </li>
+    <li>
+      <router-link :to="{path:'iframe'}">iframe</router-link>
+    </li>
   </ul>
 </template>
